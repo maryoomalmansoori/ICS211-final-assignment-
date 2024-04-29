@@ -1,0 +1,32 @@
+class HashTable: 
+    def __init__(self):
+        self.size = 10  # The size of the hash table
+        self.table = [None] * self.size
+
+    # Hash function to produce an index at the specified time
+    def hash_function(self, timing):
+        return hash(timing) % self.size # Get the hash value from the a date and time and get the hash table index
+
+    # Use the hash function to determine the index in the hash table
+    def insert(self, timing, caption_post):
+        index = self.hash_function(timing)
+        self.table[index] = {'datetime': timing, 'caption_post': caption_post} ## Add a new item with datetime and caption_post at the calculated index
+
+    # Find the post based on the timing
+    def find_post(self, timing): #defing to find the post, attributes: timing
+        index = self.hash_function(timing)
+        if self.table[index] is not None and self.table[index]['datetime'] == timing:
+            return self.table[index] 
+        else: #if not
+            return "There are no posts with this date time" #If no datetime is available, it suggests there are no posts at that specific date and time
+
+# Adding timings and the caption of the post to the hash table
+hash_table = HashTable()
+hash_table.insert('2024-04-29 07:11:22', 'A day to remember')
+hash_table.insert('2024-04-29 06:23:04', 'Life smiled to me')
+hash_table.insert('2024-04-29 25:12:04', 'Wish me a happy birthday')
+
+# We will find the post content by its unique datetime depending on the users input of the time
+post_time = input("Enter the time of the post: ") #Asking the user to input the datetime of the post
+post_by_time = hash_table.find_post(post_time)
+print(post_by_time) #expected outout: the datetime and caption post
