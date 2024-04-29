@@ -1,0 +1,42 @@
+import heapq
+
+class MaxHeap: # Create a MaxHeap class to keep a heap of items updated according to views.
+
+    def __init__(self):	
+        self.heap = [] # Creating an empty heap 
+
+    def push(self, post): # Technique for pushing a post into the heap
+        heapq.heappush(self.heap, (post.num_views, post))
+
+    def pop_max(self): # For removing the post from the heap that has the most views
+        if self.heap:
+            return heapq.heappop(self.heap)[1]
+        return None 
+
+# Define a Post class to represent a post
+class Post:
+    def __init__(self, num_post, num_views, username, datetime): # Attributes of the class post
+        self.num_post = num_post
+        self.num_views = num_views
+        self.username = username
+        self.datetime = datetime
+   
+
+# Creating a MaxHeap 
+max_heap = MaxHeap()
+
+# Test case
+post_num1 = Post(1, 10900, "Meme", "2024-04-29 18:10")
+post_num2 = Post(2, 578900, "Mariam", "2024-04-29 13:07")
+post_num3 = Post(3, 15700, "Mk", "2024-04-29 15:25")
+post_num4 = Post(4, 7826, "Elmem", "2024-04-29 05:20")
+
+max_heap.push(post_num1)
+max_heap.push(post_num2)
+max_heap.push(post_num3)
+max_heap.push(post_num4)
+
+# Generating the post with the most views
+most_viewed_post = max_heap.pop_max()
+if most_viewed_post:
+    print(f"Number of post with the highest views: {most_viewed_post.num_post}, Number of views: {most_viewed_post.num_views}, Username: {most_viewed_post.username}, Date and time: {most_viewed_post.datetime}")
