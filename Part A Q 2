@@ -1,0 +1,77 @@
+class Node:
+    def __init__(self, post):
+        self.post = post
+        self.left = None
+        self.right = None
+
+# A class called Binary Search Tree to handle the social media posts
+class BST:
+    def __init__(self):
+        self.root = None
+
+    # Define to insert a posts into the binary search tree
+    def insert(self, post):
+        if not self.root:
+            self.root = Node(post)
+        else:
+            self.insert_recursive(self.root, post)
+
+    # Define recursive to insert the posts into the BST
+    def insert_recursive(self, current_node, post):
+        if post.datetime < current_node.post.datetime:
+            if current_node.left is None:
+                current_node.left = Node(post)
+            else:
+                self.insert_recursive(current_node.left, post)
+        else:
+            if current_node.right is None:
+                current_node.right = Node(post)
+            else:
+                self.insert_recursive(current_node.right, post)
+
+    # To look for postings within a certain amount of time
+    def search_posts_in_range(self, start_datetime, end_datetime):
+        result = []
+        self.search_recursive(self.root, start_datetime, end_datetime, result)
+        return result
+
+    # Recursive helper method to look for postings within a certain amount of time
+    def search_recursive(self, current_node, start_datetime, end_datetime, result):
+        if current_node:
+            if start_datetime <= current_node.post.datetime <= end_datetime:
+                result.append(current_node.post)
+            if start_datetime < current_node.post.datetime:
+                self.search_recursive(current_node.left, start_datetime, end_datetime, result)
+
+            if end_datetime > current_node.post.datetime:
+                self.search_recursive(current_node.right, start_datetime, end_datetime, result)
+
+class Post: # Create a Post class to denote a post on social media
+    def __init__(self, num_post, num_views, username, datetime): # Attributes of the post class
+        self.num_post = num_post
+        self.num_views = num_views
+        self.username = username
+        self.datetime = datetime
+
+social_media_bst = BST()
+
+# Test cases
+post_num1 = Post(1, 10900, "Meme", "2024-04-29 18:10")
+post_num2 = Post(2, 578900, "Mariam", "2024-04-29 13:07")
+post_num3 = Post(3, 15700, "Mk", "2024-04-29 15:25")
+post_num4 = Post(4, 7826, "Elmem", "2024-04-29 05:20")
+
+# Insert the posts into the BST
+social_media_bst.insert(post_num1)
+social_media_bst.insert(post_num2)
+social_media_bst.insert(post_num3)
+social_media_bst.insert(post_num4)
+
+# The start and end time of the timing you want
+start_datetime = "2024-04-29 10:00"
+end_datetime = "2024-04-29 20:00"
+posts_in_range = social_media_bst.search_posts_in_range(start_datetime, end_datetime)
+for post in posts_in_range:
+    print(f"Post {post.num_post} by {post.username} at {post.datetime}")
+ 
+
