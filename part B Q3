@@ -1,0 +1,106 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+import numpy as np
+import heapq
+
+class RoadNetwork:
+    def __init__(self):
+        self.graph = nx.Graph()  # Initialize an empty graph using the networkx library
+
+    def add_road(self, road_id, road_name, length, start_intersection, end_intersection):
+        self.graph.add_edge(start_intersection, end_intersection, road_id=road_id, road_name=road_name, length=length)
+        # Add a road (edge) to the graph, connecting two intersections.
+        # The road is represented by an ID, name, length, and the start and end intersections it connects.
+
+    def add_house(self, house_id, intersection_id):
+        self.graph.add_node(house_id)  # Add a new node representing a house to the graph.
+        self.graph.add_edge(house_id, intersection_id)  # Connect the house to an existing intersection.
+
+    def get_shortest_path(self, start_intersection, end_intersection):
+        try:
+            shortest_path = nx.shortest_path(self.graph, start_intersection, end_intersection, weight='length')
+            # Find the shortest path between two intersections in the graph, considering the length of roads as weights.
+            return shortest_path
+        except nx.NetworkXNoPath:
+            return None
+
+    def get_road_details(self, intersection1, intersection2):
+        road = self.graph.get_edge_data(intersection1, intersection2)
+        # Retrieve the details of a road (edge) between two intersections in the graph.
+        return road
+
+    def visualize_network(self):
+        # Draw the graph
+        pos = nx.spring_layout(self.graph)  # Layout the nodes using the spring layout algorithm.
+        nx.draw(self.graph, pos, with_labels=True, node_size=300, node_color='skyblue', font_size=8)
+        # Draw the nodes and edges of the graph, with labels for the nodes.
+        # Customize the appearance of the graph by specifying node size, color, and font size.
+
+        # Draw edge labels
+        edge_labels = nx.get_edge_attributes(self.graph, 'road_name')
+        nx.draw_networkx_edge_labels(self.graph, pos, edge_labels=edge_labels, font_size=6)
+        # Add labels to the edges of the graph, displaying the road names.
+
+        # Show the plot
+        plt.title("Road Network")  # Set the title of the plot.
+        plt.show()  # Display the plot.
+
+
+# Example usage
+if __name__ == "__main__":
+    road_network = RoadNetwork()
+
+    # Adding roads (edges) with UAE street names
+    road_network.add_road(1, "Sheikh Zayed Road", 10, 1, 2)
+    road_network.add_road(2, "Al Khaleej Road", 7, 1, 3)
+    road_network.add_road(3, "Al Maktoum Street", 5, 2, 3)
+    road_network.add_road(4, "Al Fahidi Street", 4, 2, 4)
+    road_network.add_road(5, "Expo Road", 6, 3, 4)
+    road_network.add_road(6, "Jumeirah Beach Road", 8, 4, 5)
+    road_network.add_road(7, "Emirates Road", 12, 2, 5)
+    road_network.add_road(8, "Corniche Road", 9, 4, 6)
+    road_network.add_road(9, "Sheikh Zayed Bin Sultan Street", 11, 5, 6)
+    road_network.add_road(10, "Airport Road", 7, 4, 7)
+
+    # Adding houses
+    road_network.add_house(101, 1)
+    road_network.add_house(102, 2)
+    road_network.add_house(103, 3)
+    road_network.add_house(104, 4)
+    road_network.add_house(105, 5)
+    # Add houses to the road network graph by connecting them to existing intersections.
+    node_labels = {"A": "Sheikh Zayed Road", "B": "Al Khaleej Road", "C": "Al Maktoum Street", "D": "Al Fahidi Street",
+                   "E": "Expo Road", "F": "Jumeirah Beach Road", "G": "Emirates Road", "H": "Corniche Road",
+                   "I": "Sheikh Zayed Bin Sultan Street", "J": "Airport Road"}
+
+
+    # Define Dijkstra's algorithm
+
+
+def dijkstra(graph, start_node):
+    pass
+
+
+def run_dijkstra_test(graph, start_node, target_node=None):
+    distances = dijkstra(graph, start_node)  # Use graph to access the networkx graph
+    if target_node is not None:
+        if target_node in distances:
+            print(f"Shortest distance from {start_node} to {target_node}: {distances[target_node]}")
+        else:
+            print(f"Target node '{target_node}' not reachable from start node '{start_node}'.")
+    else:
+        print(f"Shortest distances from {start_node}: {distances}")
+def run_dijkstra_test(graph, start_node, target_node=None):
+    distances = dijkstra(graph, start_node)  # Use graph to access the networkx graph
+    if target_node is not None:
+        if target_node in distances:
+            print(f"Shortest distance from {start_node} to {target_node}: {distances[target_node]}")
+        else:
+            print(f"Target node '{target_node}' not reachable from start node '{start_node}'.")
+    else:
+        print(f"Shortest distances from {start_node}: {distances}")
+
+
+    G = RoadNetwork()
+    run_dijkstra_test(G, 'A', 'C')
+    run_dijkstra_test(G,'A')
